@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Akbar Medical Center</title>
+  <style>
+    /* Reset & basics */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%);
+      color: #222;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      background-color: #004a99cc;
+      color: white;
+      padding: 30px 20px;
+      text-align: center;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      position: relative;
+    }
+    header h1 {
+      font-size: 3rem;
+      margin-bottom: 8px;
+      letter-spacing: 2px;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+    }
+    header p.slogan {
+      font-size: 1.5rem;
+      font-style: italic;
+      letter-spacing: 1.2px;
+      margin-bottom: 0;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+    }
+    header p.slogan-nepali {
+      font-size: 1.1rem;
+      font-style: italic;
+      opacity: 0.8;
+      margin-top: 5px;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.6);
+    }
+
+    nav {
+      background-color: #003366cc;
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      padding: 15px 0;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+      user-select: none;
+    }
+    nav button {
+      background: transparent;
+      border: none;
+      color: white;
+      font-weight: 700;
+      font-size: 1.1rem;
+      cursor: pointer;
+      padding: 8px 18px;
+      border-radius: 25px;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+    nav button:hover, nav button.active {
+      background-color: #007bffdd;
+      transform: scale(1.05);
+      outline: none;
+    }
+
+    .container {
+      flex-grow: 1;
+      max-width: 900px;
+      margin: 40px auto;
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 12px 24px rgba(0,0,0,0.15);
+      padding: 30px 35px;
+      overflow: hidden;
+      min-height: 400px;
+      position: relative;
+    }
+
+    section {
+      opacity: 0;
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      padding: 0 10px;
+      transition: opacity 0.7s ease;
+      overflow-y: auto;
+      display: none;
+    }
+    section.active {
+      opacity: 1;
+      position: relative;
+      display: block;
+    }
+
+    h2 {
+      color: #004a99;
+      margin-bottom: 20px;
+      font-size: 2rem;
+      border-bottom: 3px solid #007bff;
+      padding-bottom: 8px;
+      letter-spacing: 1.2px;
+    }
+    p {
+      line-height: 1.7;
+      font-size: 1.1rem;
+      margin-bottom: 18px;
+      color: #333;
+    }
+    ul {
+      margin-left: 20px;
+      list-style-type: disc;
+      color: #444;
+      font-size: 1.1rem;
+    }
+    ul li {
+      margin-bottom: 10px;
+    }
+
+    .contact-info {
+      background-color: #f0f4ff;
+      border-radius: 12px;
+      padding: 20px;
+      font-size: 1.1rem;
+      box-shadow: inset 0 0 10px #c6d8ff;
+      color: #222;
+    }
+    .contact-info strong {
+      color: #004a99;
+    }
+    .contact-info a {
+      color: #0066cc;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    .contact-info a:hover {
+      text-decoration: underline;
+      color: #004a99;
+    }
+
+    footer {
+      background-color: #004a99cc;
+      color: white;
+      text-align: center;
+      padding: 18px 20px;
+      font-size: 1rem;
+      user-select: none;
+      margin-top: auto;
+      box-shadow: 0 -4px 6px rgba(0,0,0,0.1);
+    }
+
+    /* Scrollbar styling for sections */
+    section::-webkit-scrollbar {
+      width: 8px;
+    }
+    section::-webkit-scrollbar-thumb {
+      background-color: #007bff88;
+      border-radius: 20px;
+    }
+    section::-webkit-scrollbar-track {
+      background: #f0f4ff;
+      border-radius: 20px;
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      header h1 {
+        font-size: 2.2rem;
+      }
+      header p.slogan {
+        font-size: 1rem;
+      }
+      nav {
+        gap: 15px;
+      }
+      nav button {
+        padding: 6px 12px;
+        font-size: 1rem;
+      }
+      .container {
+        margin: 20px 15px;
+        padding: 20px 25px;
+      }
+      h2 {
+        font-size: 1.6rem;
+      }
+      p, ul li {
+        font-size: 1rem;
+      }
+    }
+
+    /* Chart styles */
+    #chart {
+      margin-top: 20px;
+      width: 100%;
+      height: 250px;
+      display: flex;
+      align-items: flex-end;
+      gap: 15px;
+      padding-left: 10px;
+      user-select: none;
+    }
+    .bar {
+      flex: 1;
+      background-color: #007bffcc;
+      border-radius: 8px 8px 0 0;
+      position: relative;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: center;
+      color: white;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+    .bar:hover {
+      background-color: #0056b3cc;
+    }
+    .bar span.value {
+      background: rgba(0, 0, 0, 0.5);
+      padding: 3px 6px;
+      border-radius: 4px;
+      margin-bottom: 6px;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+    }
+    .bar:hover span.value {
+      opacity: 1;
+    }
+    .bar-label {
+      margin-top: 6px;
+      color: #004a99;
+      font-weight: 700;
+      font-size: 0.85rem;
+      text-align: center;
+      user-select: none;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Akbar Medical Center</h1>
+    <p class="slogan">Service to Patient, Service to God</p>
+    <p class="slogan-nepali">रोगीको सेवा, ईश्वरको सेवा</p>
+  </header>
+
+  <nav>
+    <button id="nav-about" class="active">About Us<br><small>हाम्रो बारेमा</small></button>
+    <button id="nav-services">Services<br><small>सेवाहरू</small></button>
+    <button id="nav-contact">Contact<br><small>सम्पर्क</small></button>
+  </nav>
+
+  <div class="container">
+    <section id="about" class="active" aria-label="About Us section">
+      <h2>About Us<br><small>हाम्रो बारेमा</small></h2>
+      <p>
+        Akbar Medical Center, located in the heart of Tilganga, Kathmandu, is committed to delivering quality and compassionate healthcare services to our community. Open daily from 9:00 AM to 5:00 PM, our clinic is managed by Mr. Gobinda Basnet, who ensures a patient-first approach throughout our facility.
+        <br><br>
+        काठमाडौंको टिलगंगा क्षेत्रको मुटुमा अवस्थित, अकबर मेडिकल सेन्टरले हाम्रो समुदायलाई गुणस्तरीय र करुणामय स्वास्थ्य सेवा प्रदान गर्न प्रतिबद्ध छ। हाम्रो क्लिनिक बिहान ९ बजेदेखि साँझ ५ बजेसम्म खुला रहेको छ र गोबिन्द बास्नेतले व्यवस्थापन गर्नुहुन्छ जसले बिरामीलाई प्राथमिकता दिन्छन्।
+      </p>
+      <p>
+        We offer a welcoming reception area where our friendly staff assist with appointments and inquiries. Our clinic includes dedicated doctors’ rooms providing private, comfortable spaces for consultations and treatments. Additionally, we have a well-equipped pathology lab and various specialized labs to conduct reliable diagnostic tests swiftly, enabling precise and effective care.
+        <br><br>
+        हाम्रो स्वागतयोग्य रिसेप्शन क्षेत्रमा मैत्रीपूर्ण कर्मचारीहरूले तपाइँलाई अपोइन्टमेन्ट र सोधपुछमा सहयोग गर्छन्। हाम्रो क्लिनिकमा डाक्टरहरूको व्यक्तिगत र आरामदायी कोठा छन् जहाँ परामर्श र उपचार गरिन्छ। साथै, हामीसँग सुगमता र विश्वसनीयताका साथ परीक्षण गर्न सक्षम रोगशाला र विभिन्न विशेषज्ञ प्रयोगशाला छन्।
+      </p>
+      <p>
+        At Akbar Medical Center, we believe in a holistic healthcare approach combining modern medical techniques with compassionate patient care to support your health and well-being.
+        <br><br>
+        अकबर मेडिकल सेन्टरमा, हामी आधुनिक चिकित्सा प्रविधि र करुणामय बिरामी सेवाको संयोजन गरी समग्र स्वास्थ्य सेवा प्रदान गर्ने विश्वास राख्छौं।
+      </p>
+    </section>
+
+    <section id="services" aria-label="Services section">
+      <h2>Our Services<br><small>हाम्रा सेवाहरू</small></h2>
+      <ul>
+        <li>General Medical Consultations<br><small>सामान्य चिकित्सा परामर्श</small></li>
+        <li>Pathology and Diagnostic Labs<br><small>रोगशाला र परीक्षण प्रयोगशाला</small></li>
+        <li>Specialized Laboratory Tests<br><small>विशेषज्ञ परीक्षणहरू</small></li>
+        <li>Routine Health Check-ups<br><small>नियमित स्वास्थ्य परीक्षण</small></li>
+        <li>Patient-Centered Treatment<br><small>बिरामी केन्द्रित उपचार</small></li>
+        <li>Health Education and Counseling<br><small>स्वास्थ्य शिक्षा र परामर्श</small></li>
+      </ul>
+
+      <h3>Service Popularity<br><small>सेवाको लोकप्रियता</small></h3>
+      <div id="chart" aria-label="Service popularity chart" role="img" aria-describedby="chart-desc"></div>
+      <p id="chart-desc" style="position:absolute; left:-9999px;">
+        This chart shows mock data of the number of patients using each service at Akbar Medical Center.
+      </p>
+    </section>
+
+    <section id="contact" aria-label="Contact Us section">
+      <h2>Contact Us<br><small>सम्पर्क</small></h2>
+      <div class="contact-info">
+        <p><strong>Address / ठेगाना:</strong> Tilganga, Kathmandu, Nepal</p>
+        <p><strong>Phone / फोन:</strong> <a href="tel:+9779851008889">9851008889</a>, <a href="tel:+9779841622381">9841622381</a></p>
+        <p><strong>Email / इमेल:</strong> <a href="mailto:basnetg902@gmail.com">basnetg902@gmail.com</a></p>
+        <p><strong>Manager / व्यवस्थापक:</strong> Gobinda Basnet</p>
+        <p><strong>Operating Hours / कार्य समय:</strong> 9:00 AM – 5:00 PM</p>
+      </div>
+    </section>
+  </div>
+
+  <footer>
+    <p>© 2025 Akbar Medical Center. All rights reserved.</p>
+  </footer>
+
+  <script>
+    // Functional helpers inspired by FP (Haskell style)
+    const forEach = (arr, fn) => arr.forEach(fn);
+    const map = (arr, fn) => arr.map(fn);
+    const filter = (arr, fn) => arr.filter(fn);
+    const reduce = (arr, fn, init) => arr.reduce(fn, init);
+
+    // Navigation functionality: show one section, hide others
+    const buttons = document.querySelectorAll('nav button');
+    const sections = document.querySelectorAll('section');
+
+    forEach(buttons, button => {
+      button.addEventListener('click', () => {
+        // Remove active from all buttons
+        forEach(buttons, btn => btn.classList.remove('active'));
+        // Add active to clicked
+        button.classList.add('active');
+
+        // Show target section, hide others
+        const targetId = button.id.replace('nav-', '');
+        forEach(sections, section => {
+          if (section.id === targetId) {
+            section.classList.add('active');
+          } else {
+            section.classList.remove('active');
+          }
+        });
+      });
+    });
+
+    // Mock data for service popularity (number of patients)
+    const serviceData = [
+      { name: 'General Consultations', nep: 'सामान्य परामर्श', count: 120 },
+      { name: 'Pathology Labs', nep: 'रोगशाला प्रयोगशाला', count: 80 },
+      { name: 'Specialized Tests', nep: 'विशेषज्ञ परीक्षण', count: 60 },
+      { name: 'Health Check-ups', nep: 'स्वास्थ्य परीक्षण', count: 90 },
+      { name: 'Patient Treatment', nep: 'बिरामी उपचार', count: 110 },
+      { name: 'Health Education', nep: 'स्वास्थ्य शिक्षा', count: 70 }
+    ];
+
+    // Render chart bars
+    const chart = document.getElementById('chart');
+    const maxCount = reduce(serviceData, (max, s) => s.count > max ? s.count : max, 0);
+
+    // Clear chart container
+    chart.innerHTML = '';
+
+    // Create bars
+    const createBar = (service) => {
+      const bar = document.createElement('div');
+      bar.className = 'bar';
+      // Height relative to max count, min height 20px for visibility
+      const heightPercent = (service.count / maxCount) * 100;
+      bar.style.height = `${heightPercent}%`;
+
+      // Value tooltip
+      const valueSpan = document.createElement('span');
+      valueSpan.className = 'value';
+      valueSpan.textContent = `${service.count} Patients`;
+
+      // Label (both English & Nepali)
+      const label = document.createElement('div');
+      label.className = 'bar-label';
+      label.innerHTML = `${service.name}<br><small>${service.nep}</small>`;
+
+      bar.appendChild(valueSpan);
+      chart.appendChild(bar);
+      chart.appendChild(label);
+
+      // Show tooltip on hover (handled by CSS)
+    };
+
+    forEach(serviceData, createBar);
+  </script>
+
+</body>
+</html>
